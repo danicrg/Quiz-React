@@ -1,28 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux'
+import Game from './Game'
+import {questionAnswer} from "./redux/actions";
+import {changeQuestion} from "./redux/actions";
+import {submit} from "./redux/actions";
+
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <div>
+                        <Game question={this.props.questions[this.props.currentQuestion]}
+                        onQuestionAnswer={(answer)=>{
+                            this.props.dispatch(questionAnswer(this.props.currentQuestion, answer))
+                        }}
+                        onChangeQuestion={(next) => {
+                            this.props.dispatch(changeQuestion(this.props.currentQuestion +(next ? 1 : -1)))
+                        }}
+                        onSubmit={() => {
+                            this.props.dispatch(submit(this.props.questions))
+                        }}
+                        />
+                    </div>
+
+                </header>
+            </div>
+        );
+    }
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        ...state
+    };
+}
+
+
+export default connect(mapStateToProps)(App);
