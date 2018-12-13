@@ -2,35 +2,53 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux'
 import Game from './Game'
-import {questionAnswer} from "./redux/actions";
-import {changeQuestion} from "./redux/actions";
-import {submit} from "./redux/actions";
+import {questionAnswer, changeQuestion, submit, getQuestions, initQuestions} from "./redux/actions";
+import Navbar from "./Navbar";
 
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <header className="App-header">
-                    <div>
-                        <Game question={this.props.questions[this.props.currentQuestion]}
-                        onQuestionAnswer={(answer)=>{
-                            this.props.dispatch(questionAnswer(this.props.currentQuestion, answer))
-                        }}
-                        onChangeQuestion={(next) => {
+                <Navbar onChangeQuestion={(next) => {
                             this.props.dispatch(changeQuestion(this.props.currentQuestion +(next ? 1 : -1)))
                         }}
                         onSubmit={() => {
                             this.props.dispatch(submit(this.props.questions))
                         }}
-                        />
-                    </div>
+                        currentQuestion={this.props.currentQuestion}
 
-                </header>
+                />
+                <Game question={this.props.questions[this.props.currentQuestion]}
+                      currentQuestion={this.props.currentQuestion}
+                      onQuestionAnswer={(answer)=>{
+                          this.props.dispatch(questionAnswer(this.props.currentQuestion, answer))
+                      }}
+                      onChangeQuestion={(next) => {
+                          this.props.dispatch(changeQuestion(this.props.currentQuestion +(next ? 1 : -1)))
+                      }}
+                      onSubmit={() => {
+                          this.props.dispatch(submit(this.props.questions))
+                      }}
+                      finished={this.props.finished}
+                      score={this.props.score}
+                      onReset={() => {
+                          getQuestions().then((questions) => {
+                              this.props.dispatch(initQuestions(questions));
+                          })
+                      }}
+                />
             </div>
         );
     }
+
+    componentDidMount() {
+        getQuestions().then((questions) => {
+            this.props.dispatch(initQuestions(questions));
+        })
+    }
 }
+
 
 function mapStateToProps(state) {
     return {

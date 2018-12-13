@@ -16,5 +16,10 @@ export function submit(questions){
 }
 
 export function initQuestions(questions) {
-    return {type: INIT_QUESTIONS, payload:{questions}}
+    return {type: INIT_QUESTIONS, payload: {questions}}
+}
+
+export function getQuestions(){
+    return fetch(`https://quiz2019.herokuapp.com/api/quizzes/random10wa?token=3639bc1de811b869adf5`)
+        .then(response => response.json())
 }
