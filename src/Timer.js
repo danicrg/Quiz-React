@@ -33,10 +33,15 @@ export default class Timer extends React.Component {
             minutes = minutes + -1;
         }
 
+        if (this.props.finished) {
+            millis = 0;
+            seconds = countdownTime[1];
+            minutes = countdownTime[0];
+        }
+
         if (millis === 0 && seconds === 0 && minutes === 0){
                 clearInterval(this.interval);
                 this.setState({
-                    running: false,
                     millis: 0,
                     seconds: countdownTime[1],
                     minutes: countdownTime[0]

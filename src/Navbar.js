@@ -10,6 +10,7 @@ export default class Navbar extends React.Component {
                        onChangeQuestion={this.props.onChangeQuestion}
                        currentQuestion={this.props.currentQuestion}
                        onSubmit={this.props.onSubmit}
+                       finished={this.props.finished}
                 />
             </div>
         );

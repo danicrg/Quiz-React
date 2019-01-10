@@ -17,6 +17,7 @@ class App extends Component {
                             this.props.dispatch(submit(this.props.questions))
                         }}
                         currentQuestion={this.props.currentQuestion}
+                        finished={this.props.finished}
 
                 />
                 <Game question={this.props.questions[this.props.currentQuestion]}
